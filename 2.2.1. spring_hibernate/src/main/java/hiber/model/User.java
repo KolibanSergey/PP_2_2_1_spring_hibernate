@@ -1,6 +1,17 @@
 package hiber.model;
 
-import javax.persistence.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+import javax.persistence.OneToOne;
+import javax.persistence.MapsId;
+
 
 @Entity
 @Table(name = "users")
@@ -20,6 +31,7 @@ public class User {
    private String email;
 
    @OneToOne
+   @LazyCollection(LazyCollectionOption.TRUE)
    private Car car;
 
    public User() {

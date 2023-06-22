@@ -1,6 +1,5 @@
 package hiber.dao;
 
-import hiber.model.Car;
 import hiber.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,38 +12,30 @@ import java.util.List;
 @Repository
 public class UserDaoImp implements UserDao {
 
+    private final SessionFactory sessionFactory;
     @Autowired
-    private SessionFactory sessionFactory;
+    public UserDaoImp(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
-    public void add(User user) {
+    public void addUser(User user) {
         sessionFactory.getCurrentSession().save(user);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<User> listUsers() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
+    public List<User> getListUsers() {
+        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User",User.class);
         return query.getResultList();
     }
 
-    @Override
-    public void add(Car car) {
-        sessionFactory.getCurrentSession().save(car);
-    }
 
     @Override
-    public List<Car> listCars() {
-        TypedQuery<Car> query = sessionFactory.getCurrentSession().createQuery("from Car");
-        return query.getResultList();
-    }
-
-    @Override
-    public User findOwner(String car_name, int car_series) {
+    public User getUserByCar(String carName, int carSeries) {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery("from User as u where u.car.model = :paramModel and u.car.series = :paramSeries")
-                .setParameter("paramModel", car_name)
-                .setParameter("paramSeries", car_series);
+                .setParameter("paramModel", carName)
+                .setParameter("paramSeries", carSeries);
         return (User) query.getSingleResult();
     }
 }

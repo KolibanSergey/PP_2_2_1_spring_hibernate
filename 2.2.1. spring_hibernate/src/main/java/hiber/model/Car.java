@@ -1,7 +1,17 @@
 package hiber.model;
 
 
-import javax.persistence.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.Entity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToOne;
+import javax.persistence.FetchType;
 
 
 @Entity
@@ -16,7 +26,8 @@ public class Car {
     @Column(name = "series")
     private int series;
 
-    @OneToOne(mappedBy = "car")
+    @OneToOne
+    @LazyCollection(LazyCollectionOption.TRUE)
     private User user;
 
     public Car() {
